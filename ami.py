@@ -69,12 +69,11 @@ async def callback(mngr: Manager, msg: Message):
     await asyncio.sleep(1)
 
 
-def ami_connect():
-    logging.basicConfig(level=logging.INFO)
+def ami_connect(state=True):
     manager.on_connect = on_connect
     manager.on_login = on_login
     manager.on_disconnect = on_disconnect
-    manager.connect(run_forever=True, on_startup=on_startup, on_shutdown=on_shutdown)
+    manager.connect(run_forever=state, on_startup=on_startup, on_shutdown=on_shutdown)
 
 
 # ami_connect()
