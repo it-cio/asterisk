@@ -19,6 +19,7 @@ except Exception as ex:
     print(f'AMI-interface is not configured, or there is no connection. Error: {ex}')
 finally:
     event, caller, number, status = [], [], [], []
+    call = {}
 
 
 def on_connect(mngr: Manager):
@@ -60,6 +61,8 @@ async def callback(mngr: Manager, msg: Message):
         if msg.CallerIDNum and msg.Exten:
             caller.append(msg.CallerIDNum)
             number.append(msg.Exten)
+            call[msg.CallerIDNum] = 'dial'
+            print(call)
             logging.info(f'Incoming call\nfrom number: {msg.CallerIDNum}\nto number: {msg.Exten}')
     await asyncio.sleep(1)
 
@@ -68,16 +71,19 @@ async def callback(mngr: Manager, msg: Message):
 async def callback(mngr: Manager, msg: Message):
     if msg.DialStatus == 'ANSWER':
         status.append('end')
+        call[caller[:-1]] = 'end'
+        print(call)
+        print(msg)
         logging.info('Call ended')
     await asyncio.sleep(1)
 
 
 def connect(state=True):
-    # logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.INFO)
     manager.on_connect = on_connect
     manager.on_login = on_login
     manager.on_disconnect = on_disconnect
     manager.connect(run_forever=state, on_startup=on_startup, on_shutdown=on_shutdown)
 
 
-# ami_connect()
+connect()
