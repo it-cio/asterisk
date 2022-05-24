@@ -86,4 +86,4 @@ def connect(state=True):
     manager.connect(run_forever=state, on_startup=on_startup, on_shutdown=on_shutdown)
 
 
-connect()
+# connect()
