@@ -62,7 +62,7 @@ async def callback(mngr: Manager, msg: Message):
             caller.append(msg.CallerIDNum)
             number.append(msg.Exten)
             call[msg.CallerIDNum] = 'dial'
-            print(call)
+            # print(call)
             logging.info(f'Incoming call\nfrom number: {msg.CallerIDNum}\nto number: {msg.Exten}')
     await asyncio.sleep(1)
 
@@ -71,9 +71,9 @@ async def callback(mngr: Manager, msg: Message):
 async def callback(mngr: Manager, msg: Message):
     if msg.DialStatus == 'ANSWER':
         status.append('end')
-        call[caller[:-1]] = 'end'
-        print(call)
-        print(msg)
+        call[tuple(caller[:-1])] = 'end'
+        # print(call)
+        # print(msg)
         logging.info('Call ended')
     await asyncio.sleep(1)
 
